@@ -14,3 +14,58 @@ a {
 * {
   box-sizing: border-box;
 }
+
+
+/* globals.css */
+
+.main-container {
+  padding: 1.5rem;
+}
+
+.connect-button-container {
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-select,
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.form-radio-group {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+.form-radio {
+  margin-right: 0.5rem;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
