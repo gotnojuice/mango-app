@@ -11,9 +11,11 @@ const Pay: React.FC = () => {
   const [reference, setReference] = useState<string>("");
   const [receipt, setReceipt] = useState<string>("receipt");
   const [currency, setCurrency] = useState<string>("");
+  const [custodyAddress, setCustodyAddress] = useState<string>("");
 
-  const handleUserChange = (username: string) => {
+  const handleUserChange = (username: string, custodyAddress: string) => {
     setUser(username);
+    setCustodyAddress(custodyAddress);
   };
 
   const handleAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -60,6 +62,9 @@ const Pay: React.FC = () => {
           <div className="form-group inline-flex-container">
             <UserSearch onSelect={handleUserChange} />
             <UserInspect username={user} />
+            {custodyAddress && (
+              <div>custody address: {custodyAddress}</div>
+            )}{" "}
           </div>
 
           <div className="form-group">

@@ -78,7 +78,7 @@ a {
 }
 
 .suggestions {
-  border: 1px solid #888;
+  border:1px solid #888;
   border-top: none;
   list-style: none;
   margin: 0;
@@ -86,7 +86,7 @@ a {
   overflow-y: auto;
   padding: 0;
   position: absolute;
-  width: 100%;
+  width: 80%;
   z-index: 1000;
   background-color: #e6e6e6; /* Light grey background for suggestions */
   color: #1a1a1a;
