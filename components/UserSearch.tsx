@@ -4,7 +4,7 @@ import React, { ChangeEvent, useState } from "react";
 import { searchUsernames, User } from "../utils/neynarAPI";
 
 interface UserSearchProps {
-  onSelect: (username: string) => void;
+  onSelect: (username: string, custodyAddress: string) => void; // Update props to include custodyAddress
 }
 
 const UserSearch: React.FC<UserSearchProps> = ({ onSelect }) => {
@@ -27,10 +27,14 @@ const UserSearch: React.FC<UserSearchProps> = ({ onSelect }) => {
     }
   };
 
-  const handleSelectSuggestion = (username: string) => {
-    onSelect(username); // Call the onSelect function with the selected username
-    setQuery(username); // Populate the input field with the selected username
-    setSuggestions([]); // Clear the suggestions
+  const handleSelectSuggestion = async (selectedUser: User) => {
+    try {
+      onSelect(selectedUser.username, selectedUser.custody_address); // Call the onSelect function with the selected username and custody_address
+      setQuery(selectedUser.username); // Populate the input field with the selected username
+      setSuggestions([]); // Clear the suggestions
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+    }
   };
 
   return (
@@ -46,7 +50,7 @@ const UserSearch: React.FC<UserSearchProps> = ({ onSelect }) => {
           {suggestions.map((user) => (
             <li
               key={user.username}
-              onClick={() => handleSelectSuggestion(user.username)}
+              onClick={() => handleSelectSuggestion(user)}
               className="suggestion-item"
             >
               <img
