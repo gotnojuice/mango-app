@@ -1,10 +1,8 @@
 "use client";
 import { useState, ChangeEvent } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-
-const UserSearch: React.FC = () => {
-  return <button className="btn">Search User</button>;
-};
+import UserSearch from "../components/UserSearch";
+import UserInspect from "../components/UserInspect";
 
 const Pay: React.FC = () => {
   const [selectOption, setSelectOption] = useState<string>("");
@@ -14,10 +12,8 @@ const Pay: React.FC = () => {
   const [receipt, setReceipt] = useState<string>("receipt");
   const [currency, setCurrency] = useState<string>("");
 
-  const handleUserChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    if (e.target.value.startsWith("@")) {
-      setUser(e.target.value);
-    }
+  const handleUserChange = (username: string) => {
+    setUser(username);
   };
 
   const handleAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -38,7 +34,8 @@ const Pay: React.FC = () => {
 
   const generateString = (): string => {
     const referencePrefix = reference ? "- " : "";
-    return `${selectOption} ${user} ${amount} ${currency} ${referencePrefix}${reference}`;
+    const selectedCurrency = currency ? currency : "USDC";
+    return `@mangobot ${selectOption} @${user} ${amount} ${currency} ${referencePrefix}${reference}`;
   };
 
   return (
@@ -60,14 +57,9 @@ const Pay: React.FC = () => {
 
       {selectOption === "pay" && (
         <>
-          <div className="form-group">
-            <textarea
-              className="form-textarea"
-              placeholder="@user"
-              value={user}
-              onChange={handleUserChange}
-            ></textarea>
-            <UserSearch />
+          <div className="form-group inline-flex-container">
+            <UserSearch onSelect={handleUserChange} />
+            <UserInspect username={user} />
           </div>
 
           <div className="form-group">
@@ -83,6 +75,7 @@ const Pay: React.FC = () => {
               value={currency}
               onChange={handleCurrencyChange}
             >
+              <option value="">Select currency</option>
               <option value="USDC">USDC</option>
             </select>
           </div>
