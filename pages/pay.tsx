@@ -1,16 +1,20 @@
 "use client";
 import { useState, ChangeEvent } from "react";
+import { ethers } from "ethers";
+import { useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import UserSearch from "../components/UserSearch";
 import UserInspect from "../components/UserInspect";
+import { USDC_ABI, USDC_ADDRESS } from "../utils/ethersUtils";
 
 const Pay: React.FC = () => {
+  const { address } = useAccount();
   const [selectOption, setSelectOption] = useState<string>("");
   const [user, setUser] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
   const [reference, setReference] = useState<string>("");
   const [receipt, setReceipt] = useState<string>("receipt");
-  const [currency, setCurrency] = useState<string>("");
+  const [currency, setCurrency] = useState<string>("USDC");
   const [ethAddress, setEthAddress] = useState<string>("");
 
   const handleUserChange = (username: string, ethAddress: string) => {
@@ -36,8 +40,44 @@ const Pay: React.FC = () => {
 
   const generateString = (): string => {
     const referencePrefix = reference ? "- " : "";
-    const selectedCurrency = currency ? currency : "USDC";
-    return `@mangobot ${selectOption} @${user} ${amount} ${currency} ${referencePrefix}${reference}`;
+    return `@mangobot ${selectOption} @${user} ${amount} ${currency} ${referencePrefix}${reference}`.slice(
+      0,
+      31
+    );
+  };
+
+  const handleSendTransaction = async () => {
+    if (!ethAddress || !amount) {
+      alert("Please fill out all the required fields.");
+      return;
+    }
+
+    try {
+      await (window as any).ethereum.request({ method: "eth_requestAccounts" });
+
+      const provider = new ethers.BrowserProvider((window as any).ethereum);
+      const signer = await provider.getSigner();
+      const usdcContract = new ethers.Contract(USDC_ADDRESS, USDC_ABI, signer);
+
+      const balance = await usdcContract.balanceOf(address);
+      const amountInUSDC = ethers.parseUnits(amount, 6);
+
+      if (balance < amountInUSDC) {
+        alert("Insufficient USDC balance.");
+        return;
+      }
+
+      const tx = await usdcContract.transfer(ethAddress, amountInUSDC);
+      console.log("Transaction sent:", tx.hash);
+
+      const receipt = await tx.wait();
+      console.log("Transaction mined:", receipt);
+
+      alert("Transaction successful!");
+    } catch (error) {
+      console.error("Error sending transaction:", error);
+      alert("Error sending transaction. Please try again.");
+    }
   };
 
   return (
@@ -62,7 +102,7 @@ const Pay: React.FC = () => {
           <div className="form-group inline-flex-container">
             <UserSearch onSelect={handleUserChange} />
             <UserInspect username={user} />
-            {ethAddress && <div>eth address: {ethAddress}</div>}{" "}
+            {ethAddress && <div>eth address: {ethAddress}</div>}
           </div>
 
           <div className="form-group">
@@ -78,7 +118,6 @@ const Pay: React.FC = () => {
               value={currency}
               onChange={handleCurrencyChange}
             >
-              <option value="">Select currency</option>
               <option value="USDC">USDC</option>
             </select>
           </div>
@@ -125,7 +164,9 @@ const Pay: React.FC = () => {
               No Receipt
             </label>
           </div>
-          <button className="btn">Send</button>
+          <button className="btn" onClick={handleSendTransaction}>
+            Send
+          </button>
         </>
       )}
     </main>
