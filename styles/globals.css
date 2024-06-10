@@ -5,7 +5,7 @@ body {
   padding: 0;
   margin: 0;
   font-family: 'Courier New', Courier, monospace;
-  background-color: #d3d3d3; /* Lighter grey background */
+  background-color: #DAF7A6; /* Mango background */
   color: #1a1a1a;
 }
 
@@ -20,7 +20,7 @@ a {
 
 .main-container {
   padding: 1.5rem;
-  background-color: #f0f0f0; /* Light grey background for main container */
+  background-color: #DAF7A6; /* Mango background for main container */
   color: #1a1a1a;
 }
 
@@ -31,7 +31,7 @@ a {
 .title {
   font-size: 2rem;
   margin-bottom: 1.5rem;
-  color: #32a852; /* Green accent */
+  color: #FF5733; /* Mango orange accent */
 }
 
 .form-select,
@@ -40,9 +40,9 @@ a {
   width: 100%;
   padding: 0.5rem;
   margin-bottom: 1rem;
-  border: 1px solid #888;
+  border: 1px solid #FF5733;
   border-radius: 0.25rem;
-  background-color: #e6e6e6; /* Light grey background for form elements */
+  background-color: #DAF7A6; /* Mango background for form elements */
   color: #1a1a1a;
 }
 
@@ -56,7 +56,7 @@ a {
   display: flex;
   align-items: center;
   margin-right: 1rem;
-  color: #32a852; /* Green accent */
+  color: #FFBD33; /* Mango yellow accent */
 }
 
 .form-radio {
@@ -67,18 +67,18 @@ a {
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 0.25rem;
-  background-color: #32a852; /* Green accent */
+  background-color: #FF5733; /* Mango orange accent */
   color: #f0f0f0;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .btn:hover {
-  background-color: #26793e; /* Darker green accent */
+  background-color: #C70039; /* Darker mango red accent */
 }
 
 .suggestions {
-  border:1px solid #888;
+  border: 1px solid #888;
   border-top: none;
   list-style: none;
   margin: 0;
@@ -88,7 +88,7 @@ a {
   position: absolute;
   width: 80%;
   z-index: 1000;
-  background-color: #e6e6e6; /* Light grey background for suggestions */
+  background-color: #DAF7A6; /* Mango background for suggestions */
   color: #1a1a1a;
 }
 
@@ -105,15 +105,16 @@ a {
 }
 
 .suggestions li:hover {
-  background: #d3d3d3;
+  background: #DAF7A6;
+  color: #FF5733;
 }
 
 .highlight-red {
-  color: #ff4d4d; /* Red accent */
+  color: #FF5733; /* Mango red accent */
 }
 
 .highlight-green {
-  color: #32a852; /* Green accent */
+  color: #FFBD33; /* Mango yellow accent */
 }
 
 .inline-flex-container {
@@ -142,4 +143,32 @@ a {
 
 .username {
   font-size: 16px; /* Adjust as needed */
+}
+
+.navbar {
+  background-color: #FFBD33; /* Mango yellow accent */
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0.25rem;
+}
+
+.navbar-list {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navbar-item {
+  margin-right: 1rem;
+}
+
+.navbar-link {
+  color: white;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.navbar-link:hover {
+  color: #C70039; /* Mango red on hover */
 }

@@ -6,6 +6,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import UserSearch from "../components/UserSearch";
 import UserInspect from "../components/UserInspect";
 import { USDC_ABI, USDC_ADDRESS } from "../utils/ethersUtils";
+import NavBar from "../components/NavBar";
 
 const Pay: React.FC = () => {
   const { address } = useAccount();
@@ -82,6 +83,7 @@ const Pay: React.FC = () => {
 
   return (
     <main className="main-container">
+      <NavBar />
       <div className="connect-button-container">
         <ConnectButton />
       </div>
