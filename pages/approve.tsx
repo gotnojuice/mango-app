@@ -75,7 +75,7 @@ const Approve = () => {
       <h1 className="title">Pending Transactions</h1>
 
       {transactions.length === 0 ? (
-        <p>No pending transactions.</p>
+        <p>Coming soon...</p>
       ) : (
         <ul>
           {transactions.map((transaction) => (
