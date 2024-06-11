@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { sql } from '@vercel/postgres';
 import axios from 'axios';
+import { sql } from '@vercel/postgres';
 
 const NEYNAR_API_URL = 'https://api.neynar.com/v2/farcaster/user/search';
 const API_KEY = process.env.NEYNAR_API_KEY;
@@ -25,15 +25,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   try {
-    const { content, author, mentions } = req.body;
+    const { content, author, mentions } = req.body.data.cast;
 
-    // Extract data from the webhook payload
+    if (!author || !author.username || !mentions || mentions.length === 0 || !mentions[0].username) {
+      res.status(400).json({ error: 'Invalid payload structure' });
+      return;
+    }
+
     const senderUsername = author.username;
-    const senderDisplayName = author.display_name;
-    const receiverUsername = mentions[0]?.username;
+    const receiverUsername = mentions[0].username;
 
-    // Validate and parse the content
-    const match = content.match(/^@mangobot pay @(\w+) (\d+) USDC - (.+)$/);
+    const match = content.body.text.match(/^@mangobot pay @(\w+) (\d+) USDC - (.+)$/);
     if (!match) {
       res.status(400).json({ error: 'Invalid message format' });
       return;
@@ -42,7 +44,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const amount = match[2];
     const reference = match[3];
 
-    // Get sender and receiver addresses
     const fetchUserAddress = async (username: string): Promise<string | null> => {
       try {
         const response = await axios.get(NEYNAR_API_URL, {
@@ -69,7 +70,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return;
     }
 
-    // Insert into the database
     await sql`
       INSERT INTO transactions (sender_address, receiver_address, amount, reference)
       VALUES (${senderAddress}, ${receiverAddress}, ${amount}, ${reference})
