@@ -1,16 +1,14 @@
-import { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 const NEYNAR_API_URL = 'https://api.neynar.com/v2/farcaster/user/search';
 const API_KEY = process.env.NEYNAR_API_KEY;
 
-// Define the type for the verified addresses object
 interface VerifiedAddresses {
   eth_addresses: string[];
   sol_addresses: string[];
 }
 
-// Define the type for the user object returned by the API
 export interface User {
   username: string;
   display_name: string;
@@ -21,8 +19,8 @@ export interface User {
 const searchUsernames = async (req: NextApiRequest, res: NextApiResponse) => {
   const { query } = req.query;
 
-  if (!query) {
-    return res.status(400).json({ error: 'Query parameter is required' });
+  if (!query || typeof query !== 'string') {
+    return res.status(400).json({ error: 'Invalid query' });
   }
 
   try {
@@ -37,6 +35,7 @@ const searchUsernames = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     const users: User[] = response.data.result.users;
+
     return res.status(200).json(users);
   } catch (error) {
     console.error('Error fetching username suggestions:', error);
