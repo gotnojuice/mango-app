@@ -27,17 +27,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     console.log('Webhook payload:', req.body);
 
-    const { content, author, mentions } = req.body.data.cast;
+    const cast = req.body?.data?.cast;
+    const text = cast?.text;
+    const author = cast?.author;
+    const mentionedProfiles = cast?.mentioned_profiles;
 
-    if (!author || !author.username || !mentions || mentions.length === 0 || !mentions[0].username) {
+    if (!author?.username || !mentionedProfiles?.[0]?.username) {
       res.status(400).json({ error: 'Invalid payload structure' });
       return;
     }
 
     const senderUsername = author.username;
-    const receiverUsername = mentions[0].username;
+    const receiverUsername = mentionedProfiles[0].username;
 
-    const match = content.body.text.match(/^@mangobot pay @(\w+) (\d+) USDC - (.+)$/);
+    const match = text?.match(/^@mangobot pay @(\w+) (\d+) USDC - (.+)$/);
     if (!match) {
       res.status(400).json({ error: 'Invalid message format' });
       return;
