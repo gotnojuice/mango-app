@@ -27,7 +27,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     console.log('Webhook payload:', req.body);
 
-    const cast = req.body?.data?.cast;
+    const cast = req.body?.data;
     const text = cast?.text;
     const author = cast?.author;
     const mentionedProfiles = cast?.mentioned_profiles;
