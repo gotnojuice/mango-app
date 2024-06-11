@@ -25,6 +25,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   try {
+    console.log('Webhook payload:', req.body);
+
     const { content, author, mentions } = req.body.data.cast;
 
     if (!author || !author.username || !mentions || mentions.length === 0 || !mentions[0].username) {
