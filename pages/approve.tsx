@@ -4,14 +4,14 @@ import { useAccount } from "wagmi";
 import { ethers } from "ethers";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import NavBar from "../components/NavBar";
-import { USDC_ABI, USDC_ADDRESS } from "./api/ethersUtils";
+import { USDC_ABI, USDC_ADDRESS } from "../api/ethersUtils";
 
-// Define a type for the transaction
 interface Transaction {
   id: number;
-  caster_eth_address: string;
-  mentioned_eth_address: string;
+  sender_address: string;
+  receiver_address: string;
   amount: string;
+  created_at: string;
   reference: string;
 }
 
@@ -24,9 +24,16 @@ const Approve = () => {
       try {
         const response = await fetch(`/api/transactions?address=${address}`);
         const data = await response.json();
-        setTransactions(data.transactions);
+
+        if (Array.isArray(data.transactions)) {
+          setTransactions(data.transactions);
+        } else {
+          console.error("Unexpected response format:", data);
+          setTransactions([]);
+        }
       } catch (error) {
         console.error("Error fetching transactions:", error);
+        setTransactions([]);
       }
     };
 
@@ -37,7 +44,6 @@ const Approve = () => {
 
   const handleApprove = async (transaction: Transaction) => {
     try {
-      // Connect to the provider
       await (window as any).ethereum.request({ method: "eth_requestAccounts" });
 
       const provider = new ethers.BrowserProvider((window as any).ethereum);
@@ -46,7 +52,7 @@ const Approve = () => {
 
       const amountInUSDC = ethers.parseUnits(transaction.amount, 6);
       const tx = await usdcContract.transfer(
-        transaction.mentioned_eth_address,
+        transaction.receiver_address,
         amountInUSDC
       );
 
@@ -57,7 +63,6 @@ const Approve = () => {
 
       alert("Transaction successful!");
 
-      // Remove approved transaction from the list
       setTransactions(transactions.filter((t) => t.id !== transaction.id));
     } catch (error) {
       console.error("Error sending transaction:", error);
@@ -75,16 +80,16 @@ const Approve = () => {
       <h1 className="title">Pending Transactions</h1>
 
       {transactions.length === 0 ? (
-        <p>Coming soon...</p>
+        <p>No pending transactions.</p>
       ) : (
         <ul>
           {transactions.map((transaction) => (
             <li key={transaction.id}>
               <p>
-                From: {transaction.caster_eth_address} <br />
-                To: {transaction.mentioned_eth_address} <br />
+                From: {transaction.sender_address} <br />
+                To: {transaction.receiver_address} <br />
                 Amount: {transaction.amount} USDC <br />
-                Reference: {transaction.reference || "N/A"}
+                Reference: {transaction.reference}
               </p>
               <button onClick={() => handleApprove(transaction)}>
                 Approve
