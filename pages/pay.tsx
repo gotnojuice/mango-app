@@ -36,10 +36,7 @@ const Pay: React.FC = () => {
 
   const generateString = (): string => {
     const referencePrefix = reference ? "- " : "";
-    return `@mangobot ${selectOption} @${user} ${amount} ${currency} ${referencePrefix}${reference}`.slice(
-      0,
-      31
-    );
+    return `@mangobot ${selectOption} @${user} ${amount} ${currency} ${referencePrefix}${reference}`;
   };
 
   const handleSendTransaction = async () => {
