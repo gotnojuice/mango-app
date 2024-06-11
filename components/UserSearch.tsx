@@ -1,8 +1,19 @@
+// components/UserSearch.tsx
+
 import React, { ChangeEvent, useState } from "react";
-import { searchUsernames, User } from "../utils/neynarAPI";
 
 interface UserSearchProps {
   onSelect: (username: string, ethAddress: string) => void; // Update props to include ethAddress
+}
+
+interface User {
+  username: string;
+  display_name: string;
+  pfp_url: string;
+  verified_addresses: {
+    eth_addresses: string[];
+    sol_addresses: string[];
+  };
 }
 
 const UserSearch: React.FC<UserSearchProps> = ({ onSelect }) => {
@@ -15,8 +26,9 @@ const UserSearch: React.FC<UserSearchProps> = ({ onSelect }) => {
 
     if (value.length > 0) {
       try {
-        const response = await searchUsernames(value);
-        setSuggestions(response);
+        const response = await fetch(`/api/searchUsernames?query=${value}`);
+        const data: User[] = await response.json();
+        setSuggestions(data);
       } catch (error) {
         console.error("Error fetching suggestions:", error);
       }

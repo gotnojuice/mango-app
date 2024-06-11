@@ -5,7 +5,7 @@ import { useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import UserSearch from "../components/UserSearch";
 import UserInspect from "../components/UserInspect";
-import { USDC_ABI, USDC_ADDRESS } from "../utils/ethersUtils";
+import { USDC_ABI, USDC_ADDRESS } from "./api/ethersUtils";
 import NavBar from "../components/NavBar";
 
 const Pay: React.FC = () => {
@@ -14,7 +14,6 @@ const Pay: React.FC = () => {
   const [user, setUser] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
   const [reference, setReference] = useState<string>("");
-  const [receipt, setReceipt] = useState<string>("receipt");
   const [currency, setCurrency] = useState<string>("USDC");
   const [ethAddress, setEthAddress] = useState<string>("");
 
@@ -29,10 +28,6 @@ const Pay: React.FC = () => {
 
   const handleReferenceChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setReference(e.target.value);
-  };
-
-  const handleReceiptChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setReceipt(e.target.value);
   };
 
   const handleCurrencyChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -142,30 +137,6 @@ const Pay: React.FC = () => {
             />
           </div>
 
-          <div className="form-group">
-            <label className="form-radio-group">
-              <input
-                type="radio"
-                className="form-radio"
-                name="receipt"
-                value="receipt"
-                checked={receipt === "receipt"}
-                onChange={handleReceiptChange}
-              />
-              Receipt
-            </label>
-            <label className="form-radio-group">
-              <input
-                type="radio"
-                className="form-radio"
-                name="receipt"
-                value="no receipt"
-                checked={receipt === "no receipt"}
-                onChange={handleReceiptChange}
-              />
-              No Receipt
-            </label>
-          </div>
           <button className="btn" onClick={handleSendTransaction}>
             Send
           </button>
