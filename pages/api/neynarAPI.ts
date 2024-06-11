@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const NEYNAR_API_URL = 'https://api.neynar.com/v2/farcaster/user/search';
-const API_KEY = process.env.NEXT_PUBLIC_NEYNAR_API_KEY;
+const API_KEY = process.env.NEYNAR_API_KEY;
 
 // Define the type for the verified addresses object
 interface VerifiedAddresses {

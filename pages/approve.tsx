@@ -4,7 +4,7 @@ import { useAccount } from "wagmi";
 import { ethers } from "ethers";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import NavBar from "../components/NavBar";
-import { USDC_ABI, USDC_ADDRESS } from "../utils/ethersUtils";
+import { USDC_ABI, USDC_ADDRESS } from "./api/ethersUtils";
 
 // Define a type for the transaction
 interface Transaction {

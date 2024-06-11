@@ -5,7 +5,7 @@ import { useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import UserSearch from "../components/UserSearch";
 import UserInspect from "../components/UserInspect";
-import { USDC_ABI, USDC_ADDRESS } from "../utils/ethersUtils";
+import { USDC_ABI, USDC_ADDRESS } from "./api/ethersUtils";
 import NavBar from "../components/NavBar";
 
 const Pay: React.FC = () => {

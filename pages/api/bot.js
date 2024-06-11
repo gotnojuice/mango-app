@@ -1,7 +1,7 @@
-import { query } from '../../utils/db';
+import { query } from './db';
 import axios from 'axios';
 
-const API_KEY = process.env.NEXT_PUBLIC_NEYNAR_API_KEY;
+const API_KEY = process.env.NEYNAR_API_KEY;
 
 const getUserData = async (username) => {
   const response = await axios.get(`https://api.neynar.com/v2/farcaster/user/${username}`, {
