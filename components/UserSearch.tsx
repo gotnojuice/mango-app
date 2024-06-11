@@ -1,19 +1,19 @@
-// components/UserSearch.tsx
-
 import React, { ChangeEvent, useState } from "react";
 
 interface UserSearchProps {
   onSelect: (username: string, ethAddress: string) => void; // Update props to include ethAddress
 }
 
-interface User {
+interface VerifiedAddresses {
+  eth_addresses: string[];
+  sol_addresses: string[];
+}
+
+export interface User {
   username: string;
   display_name: string;
   pfp_url: string;
-  verified_addresses: {
-    eth_addresses: string[];
-    sol_addresses: string[];
-  };
+  verified_addresses: VerifiedAddresses;
 }
 
 const UserSearch: React.FC<UserSearchProps> = ({ onSelect }) => {
@@ -27,8 +27,8 @@ const UserSearch: React.FC<UserSearchProps> = ({ onSelect }) => {
     if (value.length > 0) {
       try {
         const response = await fetch(`/api/searchUsernames?query=${value}`);
-        const data: User[] = await response.json();
-        setSuggestions(data);
+        const users: User[] = await response.json();
+        setSuggestions(users);
       } catch (error) {
         console.error("Error fetching suggestions:", error);
       }
