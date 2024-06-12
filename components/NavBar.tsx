@@ -1,18 +1,22 @@
 import Link from "next/link";
-import React from "react";
 
-const NavBar: React.FC = () => {
+const NavBar = () => {
   return (
     <nav className="navbar">
       <ul className="navbar-list">
         <li className="navbar-item">
-          <Link href="/pay" className="navbar-link">
-            Pay
+          <Link href="/home">
+            <a className="navbar-link">Home</a>
           </Link>
         </li>
         <li className="navbar-item">
-          <Link href="/approve" className="navbar-link">
-            Approve
+          <Link href="/pay">
+            <a className="navbar-link">Pay</a>
+          </Link>
+        </li>
+        <li className="navbar-item">
+          <Link href="/approve">
+            <a className="navbar-link">Approve</a>
           </Link>
         </li>
       </ul>
