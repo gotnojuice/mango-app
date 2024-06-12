@@ -28,27 +28,30 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     console.log('Webhook payload:', JSON.stringify(req.body, null, 2));
 
     const { data } = req.body;
-    const cast = data.cast;
+    const cast = data.object === 'cast' ? data : null;
+
     if (!cast) {
       console.error('No cast object in payload');
       res.status(400).json({ error: 'Invalid payload structure' });
       return;
     }
 
-    const { text, author, mentioned_profiles } = cast;
+    console.log('sellerUsername', data.cast.author.username)
+    console.log('sellerUsername', data.cast.author.text)
+
+    const { text, author } = cast;
 
     console.log('Cast:', JSON.stringify(cast, null, 2));
     console.log('Text:', text);
     console.log('Author:', JSON.stringify(author, null, 2));
-    console.log('Mentioned Profiles:', JSON.stringify(mentioned_profiles, null, 2));
 
-    if (!text || !author || !mentioned_profiles) {
+    if (!text || !author) {
       res.status(400).json({ error: 'Invalid payload structure' });
       return;
     }
 
     const senderUsername = author.username;
-    const match = text.match(/^@mangobot pay @(\w+) (\d+) USDC - (.+)$/);
+    const match = text.match(/^@mangobot pay @(\w+) (\d+) (\w+) - (.+)$/);
 
     if (!match) {
       res.status(400).json({ error: 'Invalid message format' });
@@ -57,11 +60,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const receiverUsername = match[1];
     const amount = match[2];
-    const reference = match[3];
+    const currency = match[3];
+    const reference = match[4];
 
     console.log('Sender Username:', senderUsername);
     console.log('Receiver Username:', receiverUsername);
     console.log('Amount:', amount);
+    console.log('Currency:', currency);
     console.log('Reference:', reference);
 
     const fetchUserAddress = async (username: string): Promise<string | null> => {
@@ -95,8 +100,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     try {
       await sql`
-        INSERT INTO transactions (sender_address, receiver_address, amount, reference)
-        VALUES (${senderAddress}, ${receiverAddress}, ${amount}, ${reference})
+        INSERT INTO transactions (sender_address, receiver_address, amount, reference, currency)
+        VALUES (${senderAddress}, ${receiverAddress}, ${amount}, ${reference}, ${currency})
       `;
       res.status(200).json({ message: 'Transaction recorded' });
     } catch (dbError) {
