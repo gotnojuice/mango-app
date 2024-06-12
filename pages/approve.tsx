@@ -25,6 +25,8 @@ const Approve = () => {
         const response = await fetch(`/api/transactions?address=${address}`);
         const data = await response.json();
 
+        console.log("Fetched transactions:", data);
+
         if (Array.isArray(data.transactions)) {
           setTransactions(data.transactions);
         } else {
