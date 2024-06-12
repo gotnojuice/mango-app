@@ -63,10 +63,28 @@ const Approve = () => {
 
       alert("Transaction successful!");
 
+      await fetch(`/api/transactions/${transaction.id}`, {
+        method: "DELETE",
+      });
+
       setTransactions(transactions.filter((t) => t.id !== transaction.id));
     } catch (error) {
       console.error("Error sending transaction:", error);
       alert("Error sending transaction. Please try again.");
+    }
+  };
+
+  const handleReject = async (transaction: Transaction) => {
+    try {
+      await fetch(`/api/transactions/${transaction.id}`, {
+        method: "DELETE",
+      });
+
+      alert("Transaction rejected!");
+      setTransactions(transactions.filter((t) => t.id !== transaction.id));
+    } catch (error) {
+      console.error("Error rejecting transaction:", error);
+      alert("Error rejecting transaction. Please try again.");
     }
   };
 
@@ -94,6 +112,7 @@ const Approve = () => {
               <button onClick={() => handleApprove(transaction)}>
                 Approve
               </button>
+              <button onClick={() => handleReject(transaction)}>Reject</button>
             </li>
           ))}
         </ul>
