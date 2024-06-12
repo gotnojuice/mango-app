@@ -55,7 +55,7 @@ const Index: NextPage = () => {
             </li>
           </ul>
           <p>
-            We've simplified payments with a user-friendly syntax to make
+            We&apos;ve simplified payments with a user-friendly syntax to make
             transactions straightforward and understandable:
           </p>
           <p className="syntax">
