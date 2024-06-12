@@ -171,7 +171,7 @@ a {
   color: #C70039; /* Mango red on hover */
 }
 
-/* New Styles for Transactions Table */
+/* New styles for the transactions table */
 .transactions-table {
   width: 100%;
   border-collapse: collapse;
@@ -180,8 +180,8 @@ a {
 
 .transactions-table th,
 .transactions-table td {
-  padding: 1rem;
-  border: 1px solid #ccc;
+  border: 1px solid #FF5733;
+  padding: 0.5rem;
   text-align: left;
 }
 
@@ -190,37 +190,27 @@ a {
 }
 
 .transactions-table tr:nth-child(even) {
-  background-color: #f9f9f9;
+  background-color: #FFEBCD; /* Light mango background for even rows */
 }
 
-.transactions-table tr:hover {
-  background-color: #f1f1f1;
-}
-
-.btn-approve,
-.btn-reject {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.transactions-table tr:nth-child(odd) {
+  background-color: #F8F8F8; /* Slightly lighter mango background for odd rows */
 }
 
 .btn-approve {
-  background-color: #28a745;
-  color: #fff;
+  background-color: #4CAF50; /* Green */
+  color: white;
 }
 
 .btn-approve:hover {
-  background-color: #218838;
+  background-color: #45a049;
 }
 
 .btn-reject {
-  background-color: #dc3545;
-  color: #fff;
-  margin-left: 0.5rem;
+  background-color: #f44336; /* Red */
+  color: white;
 }
 
 .btn-reject:hover {
-  background-color: #c82333;
+  background-color: #da190b;
 }
