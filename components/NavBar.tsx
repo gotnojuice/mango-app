@@ -5,18 +5,18 @@ const NavBar = () => {
     <nav className="navbar">
       <ul className="navbar-list">
         <li className="navbar-item">
-          <Link href="/home">
-            <a className="navbar-link">Home</a>
+          <Link href="/" className="navbar-link">
+            Home
           </Link>
         </li>
         <li className="navbar-item">
-          <Link href="/pay">
-            <a className="navbar-link">Pay</a>
+          <Link href="/pay" className="navbar-link">
+            Pay
           </Link>
         </li>
         <li className="navbar-item">
-          <Link href="/approve">
-            <a className="navbar-link">Approve</a>
+          <Link href="/approve" className="navbar-link">
+            Approve
           </Link>
         </li>
       </ul>

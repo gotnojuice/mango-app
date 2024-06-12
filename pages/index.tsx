@@ -5,42 +5,63 @@ import { useEffect } from "react";
 import { useAccount } from "wagmi";
 import Head from "next/head";
 import NavBar from "../components/NavBar";
-import styles from "../styles/Home.module.css";
+import Link from "next/link";
 
-const Home: NextPage = () => {
+const Index: NextPage = () => {
   const router = useRouter();
   const { isConnected } = useAccount();
 
   useEffect(() => {
     if (isConnected) {
-      router.push("/home"); // Redirect to /home if connected
+      router.push("/");
     }
   }, [isConnected, router]);
 
   return (
-    <div className={styles.container}>
+    <div className="main-container">
       <Head>
         <title>mangojuice</title>
         <meta content="social money from gotnojuice" name="description" />
         <link href="/favicon.ico" rel="icon" />
       </Head>
 
-      <main className={styles.main}>
+      <main className="main-container">
         <NavBar />
         <div className="connect-button-container">
           <ConnectButton />
         </div>
 
-        <h1 className={styles.title}>Welcome to mangojuice</h1>
+        <h1 className="title">Welcome to mangojuice</h1>
 
         <div className="content-container">
           <p>
-            mangojuice is your go-to solution for easy USDC payments on the Base
-            network. You can make direct transactions through the "Pay" section
-            or send a message on Farcaster, which you can later approve in the
-            "Approve" section. We've simplified payments with a user-friendly
-            syntax to make transactions straightforward and understandable.
+            mangojuice is the solution for text-to-pay USDC payments on the Base
+            network:
           </p>
+          <ul>
+            <li>
+              You can make direct transactions through{" "}
+              <Link href="/pay" className="link">
+                Pay
+              </Link>
+              .
+            </li>
+            <li>
+              Approve messages sent to @mangobot on Farcaster in{" "}
+              <Link href="/approve" className="link">
+                Approve
+              </Link>
+              .
+            </li>
+          </ul>
+          <p>
+            We've simplified payments with a user-friendly syntax to make
+            transactions straightforward and understandable:
+          </p>
+          <p className="syntax">
+            @mangobot pay [@who] [howmuch] USDC - [payment reference]
+          </p>
+
           <p>
             mangojuice leverages Farcaster for social proof, making payments on
             Base not only easier but also more trusted.
@@ -51,4 +72,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default Index;
