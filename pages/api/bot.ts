@@ -36,9 +36,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return;
     }
 
-    console.log('sellerUsername', data.author.username)
-    console.log('sellerUsername', data.text)
-
     const { text, author } = cast;
 
     console.log('Cast:', JSON.stringify(cast, null, 2));
@@ -100,8 +97,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     try {
       await sql`
-        INSERT INTO transactions (sender_address, receiver_address, amount, reference, currency)
-        VALUES (${senderAddress}, ${receiverAddress}, ${amount}, ${reference}, ${currency})
+        INSERT INTO transactions (sender_address, receiver_address, amount, reference)
+        VALUES (${senderAddress}, ${receiverAddress}, ${amount}, ${reference})
       `;
       res.status(200).json({ message: 'Transaction recorded' });
     } catch (dbError) {
