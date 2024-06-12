@@ -13,6 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const result = await sql`
       SELECT * FROM transactions WHERE sender_address = ${address} OR receiver_address = ${address}
     `;
+    console.log('Fetched transactions:', result.rows);
     res.status(200).json({ transactions: result.rows });
   } catch (error) {
     console.error('Error fetching transactions:', error);
