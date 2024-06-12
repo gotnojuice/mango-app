@@ -27,19 +27,23 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <NavBar />
-        <ConnectButton />
+        <div className="connect-button-container">
+          <ConnectButton />
+        </div>
 
-        <h1 className={styles.title}>
-          Welcome to <a href="">mangojuice</a>
-        </h1>
+        <h1 className={styles.title}>Welcome to mangojuice</h1>
 
-        <div className={styles.contentContainer}>
+        <div className="content-container">
           <p>
-            MangoJuice is your seamless solution for managing peer-to-peer
-            payments on the blockchain. Easily send and approve transactions
-            using USDC directly through Farcaster casts. Simply mention
-            @mangobot with the payment details in your casts, and approve or
-            reject transactions with a click.
+            mangojuice is your go-to solution for easy USDC payments on the Base
+            network. You can make direct transactions through the "Pay" section
+            or send a message on Farcaster, which you can later approve in the
+            "Approve" section. We've simplified payments with a user-friendly
+            syntax to make transactions straightforward and understandable.
+          </p>
+          <p>
+            mangojuice leverages Farcaster for social proof, making payments on
+            Base not only easier but also more trusted.
           </p>
         </div>
       </main>
