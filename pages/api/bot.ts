@@ -113,14 +113,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await axios.post(
         NEYNAR_POST_CAST_URL,
         {
+          signer_uuid: SIGNER_UUID,
           text: `Transaction ready for approval, head to https://mangojuice.vercel.app/approve to confirm.`,
-          reply_to_hash: hash,
+          parent: hash,
         },
         {
           headers: {
             accept: 'application/json',
             api_key: API_KEY,
-            Authorization: `Bearer ${SIGNER_UUID}`,
+            'content-type': 'application/json',
           },
         }
       );
