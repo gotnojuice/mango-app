@@ -3,7 +3,9 @@ import axios from 'axios';
 import { sql } from '@vercel/postgres';
 
 const NEYNAR_API_URL = 'https://api.neynar.com/v2/farcaster/user/search';
+const NEYNAR_POST_CAST_URL = 'https://api.neynar.com/v2/farcaster/cast';
 const API_KEY = process.env.NEYNAR_API_KEY;
+const SIGNER_UUID = process.env.SIGNER_UUID;
 
 interface VerifiedAddresses {
   eth_addresses: string[];
@@ -36,7 +38,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return;
     }
 
-    const { text, author } = cast;
+    const { text, author, hash } = cast;
 
     console.log('Cast:', JSON.stringify(cast, null, 2));
     console.log('Text:', text);
@@ -97,14 +99,36 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     try {
       await sql`
-        INSERT INTO transactions (sender_address, receiver_address, amount, reference, receiver_username)
-        VALUES (${senderAddress}, ${receiverAddress}, ${amount}, ${reference}, ${receiverUsername})
+        INSERT INTO transactions (sender_address, receiver_address, amount, reference, receiver_username, hash)
+        VALUES (${senderAddress}, ${receiverAddress}, ${amount}, ${reference}, ${receiverUsername}, ${hash})
       `;
-      res.status(200).json({ message: 'Transaction recorded' });
     } catch (dbError) {
       console.error('Error inserting transaction:', dbError);
       res.status(500).json({ error: 'Error recording transaction' });
+      return;
     }
+
+    // Reply to the cast to notify about the transaction
+    try {
+      await axios.post(
+        NEYNAR_POST_CAST_URL,
+        {
+          text: `Transaction ready for approval, head to https://mangojuice.vercel.app/approve to confirm.`,
+          reply_to_hash: hash,
+        },
+        {
+          headers: {
+            accept: 'application/json',
+            api_key: API_KEY,
+            Authorization: `Bearer ${SIGNER_UUID}`,
+          },
+        }
+      );
+    } catch (replyError) {
+      console.error('Error replying to the cast:', replyError);
+    }
+
+    res.status(200).json({ message: 'Transaction recorded and reply sent' });
   } catch (error) {
     console.error('Error handling webhook:', error);
     res.status(500).json({ error: 'Internal Server Error' });
