@@ -75,79 +75,72 @@ const Pay: React.FC = () => {
   };
 
   return (
-    <div className="main-container">
-      <Head>
-        <title>mangojuice</title>
-        <meta content="social money from gotnojuice" name="description" />
-        <link href="/favicon.ico" rel="icon" />
-      </Head>
-      <main className="main-container">
-        <NavBar />
-        <div className="connect-button-container">
-          <ConnectButton />
-        </div>
+    <main className="main-container">
+      <NavBar />
+      <div className="connect-button-container">
+        <ConnectButton />
+      </div>
 
-        <h1 className="title">I want to...</h1>
+      <h1 className="title">I want to...</h1>
 
-        <select
-          className="form-select"
-          value={selectOption}
-          onChange={(e) => setSelectOption(e.target.value)}
-        >
-          <option value="">select action</option>
-          <option value="pay">pay</option>
-        </select>
+      <select
+        className="form-select"
+        value={selectOption}
+        onChange={(e) => setSelectOption(e.target.value)}
+      >
+        <option value="">select action</option>
+        <option value="pay">pay</option>
+      </select>
 
-        {selectOption === "pay" && (
-          <>
-            <div className="form-group inline-flex-container">
-              <UserSearch onSelect={handleUserChange} />
-              <UserInspect username={user} />
-              {ethAddress && <div>eth address: {ethAddress}</div>}
-            </div>
+      {selectOption === "pay" && (
+        <>
+          <div className="form-group inline-flex-container">
+            <UserSearch onSelect={handleUserChange} />
+            <UserInspect username={user} />
+            {ethAddress && <div>eth address: {ethAddress}</div>}
+          </div>
 
-            <div className="form-group">
-              <input
-                className="form-input"
-                type="number"
-                placeholder="Amount"
-                value={amount}
-                onChange={handleAmountChange}
-              />
-              <select
-                className="form-select"
-                value={currency}
-                onChange={handleCurrencyChange}
-              >
-                <option value="USDC">USDC</option>
-              </select>
-            </div>
+          <div className="form-group">
+            <input
+              className="form-input"
+              type="number"
+              placeholder="Amount"
+              value={amount}
+              onChange={handleAmountChange}
+            />
+            <select
+              className="form-select"
+              value={currency}
+              onChange={handleCurrencyChange}
+            >
+              <option value="USDC">USDC</option>
+            </select>
+          </div>
 
-            <div className="form-group">
-              <textarea
-                className="form-textarea"
-                placeholder="Reference"
-                maxLength={50}
-                value={reference}
-                onChange={handleReferenceChange}
-              ></textarea>
-            </div>
+          <div className="form-group">
+            <textarea
+              className="form-textarea"
+              placeholder="Reference"
+              maxLength={50}
+              value={reference}
+              onChange={handleReferenceChange}
+            ></textarea>
+          </div>
 
-            <div className="form-group">
-              <textarea
-                className="form-textarea"
-                readOnly
-                value={generateString()}
-              />
-            </div>
+          <div className="form-group">
+            <textarea
+              className="form-textarea"
+              readOnly
+              value={generateString()}
+            />
+          </div>
 
-            <button className="btn" onClick={handleSendTransaction}>
-              Send
-            </button>
-          </>
-        )}
-      </main>
-    </div>
+          <button className="btn" onClick={handleSendTransaction}>
+            Send
+          </button>
+        </>
+      )}
+    </main>
   );
 };
 
