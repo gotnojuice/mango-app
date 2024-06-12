@@ -97,8 +97,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     try {
       await sql`
-        INSERT INTO transactions (sender_address, receiver_address, amount, reference)
-        VALUES (${senderAddress}, ${receiverAddress}, ${amount}, ${reference})
+        INSERT INTO transactions (sender_address, receiver_address, amount, reference, receiver_username)
+        VALUES (${senderAddress}, ${receiverAddress}, ${amount}, ${reference}, ${receiverUsername})
       `;
       res.status(200).json({ message: 'Transaction recorded' });
     } catch (dbError) {
