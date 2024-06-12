@@ -171,46 +171,22 @@ a {
   color: #C70039; /* Mango red on hover */
 }
 
-/* New styles for the transactions table */
-.transactions-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 1.5rem;
+.content-container {
+  margin-top: 2rem;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 0.25rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: #1a1a1a;
 }
 
-.transactions-table th,
-.transactions-table td {
-  border: 1px solid #FF5733;
-  padding: 0.5rem;
-  text-align: left;
+.content-container h1 {
+  margin-bottom: 1rem;
+  color: #FF5733; /* Mango orange accent */
 }
 
-.transactions-table th {
-  background-color: #FFBD33; /* Mango yellow accent */
-}
-
-.transactions-table tr:nth-child(even) {
-  background-color: #FFEBCD; /* Light mango background for even rows */
-}
-
-.transactions-table tr:nth-child(odd) {
-  background-color: #F8F8F8; /* Slightly lighter mango background for odd rows */
-}
-
-.btn-approve {
-  background-color: #4CAF50; /* Green */
-  color: white;
-}
-
-.btn-approve:hover {
-  background-color: #45a049;
-}
-
-.btn-reject {
-  background-color: #f44336; /* Red */
-  color: white;
-}
-
-.btn-reject:hover {
-  background-color: #da190b;
+.content-container p {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #1a1a1a;
 }

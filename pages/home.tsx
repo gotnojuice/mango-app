@@ -1,22 +1,10 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import type { NextPage } from "next";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-import { useAccount } from "wagmi";
 import Head from "next/head";
 import NavBar from "../components/NavBar";
 import styles from "../styles/Home.module.css";
 
-const Home: NextPage = () => {
-  const router = useRouter();
-  const { isConnected } = useAccount();
-
-  useEffect(() => {
-    if (isConnected) {
-      router.push("/home"); // Redirect to /home if connected
-    }
-  }, [isConnected, router]);
-
+const HomePage: NextPage = () => {
   return (
     <div className={styles.container}>
       <Head>
@@ -47,4 +35,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default HomePage;
