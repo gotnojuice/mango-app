@@ -28,9 +28,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     console.log('Webhook payload:', req.body);
 
     const cast = req.body?.data?.object;
-    const text = cast?.text;
-    const author = cast?.author;
-    const mentionedProfiles = cast?.mentioned_profiles;
+    if (!cast) {
+      console.error('No cast object in payload');
+      res.status(400).json({ error: 'Invalid payload structure' });
+      return;
+    }
+
+    const text = cast.text;
+    const author = cast.author;
+    const mentionedProfiles = cast.mentioned_profiles;
 
     console.log('Cast:', cast);
     console.log('Text:', text);
