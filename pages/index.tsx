@@ -62,8 +62,9 @@ const Index: NextPage = () => {
             @mangobot pay [@who] [howmuch] USDC - [payment reference]
           </p>
           <p>
-            This syntax is either created for you in Pay or required in
-            Farcaster messages for mangobot to pick them up.
+            Note, you may need to switch to Base a couple of times for the
+            Wallet Connect to work properly in sending transactions, it can be a
+            little janky at the moment, especially on mobile.
           </p>
           <p>
             mangojuice leverages Farcaster for social proof, making payments on
