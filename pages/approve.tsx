@@ -66,7 +66,7 @@ const Approve = () => {
 
       alert("Transaction successful!");
 
-      await fetch(`/api/transactions/${transaction.id}`, {
+      await fetch(`/api/transactions/${transaction.id}?action=approve`, {
         method: "DELETE",
       });
 
@@ -79,7 +79,7 @@ const Approve = () => {
 
   const handleReject = async (transaction: Transaction) => {
     try {
-      await fetch(`/api/transactions/${transaction.id}`, {
+      await fetch(`/api/transactions/${transaction.id}?action=reject`, {
         method: "DELETE",
       });
 
