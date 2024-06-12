@@ -32,6 +32,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const author = cast?.author;
     const mentionedProfiles = cast?.mentioned_profiles;
 
+    console.log('Cast:', cast);
+    console.log('Text:', text);
+    console.log('Author:', author);
+    console.log('Mentioned Profiles:', mentionedProfiles);
+
     if (!author?.username || !mentionedProfiles?.[0]?.username) {
       res.status(400).json({ error: 'Invalid payload structure' });
       return;
@@ -48,6 +53,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const amount = match[2];
     const reference = match[3];
+
+    console.log('Sender Username:', senderUsername);
+    console.log('Receiver Username:', receiverUsername);
+    console.log('Amount:', amount);
+    console.log('Reference:', reference);
 
     const fetchUserAddress = async (username: string): Promise<string | null> => {
       try {
@@ -70,17 +80,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const senderAddress = await fetchUserAddress(senderUsername);
     const receiverAddress = await fetchUserAddress(receiverUsername);
 
+    console.log('Sender Address:', senderAddress);
+    console.log('Receiver Address:', receiverAddress);
+
     if (!senderAddress || !receiverAddress) {
       res.status(400).json({ error: 'Could not retrieve sender or receiver address' });
       return;
     }
 
-    await sql`
-      INSERT INTO transactions (sender_address, receiver_address, amount, reference)
-      VALUES (${senderAddress}, ${receiverAddress}, ${amount}, ${reference})
-    `;
-
-    res.status(200).json({ message: 'Transaction recorded' });
+    try {
+      await sql`
+        INSERT INTO transactions (sender_address, receiver_address, amount, reference)
+        VALUES (${senderAddress}, ${receiverAddress}, ${amount}, ${reference})
+      `;
+      res.status(200).json({ message: 'Transaction recorded' });
+    } catch (dbError) {
+      console.error('Error inserting transaction:', dbError);
+      res.status(500).json({ error: 'Error recording transaction' });
+    }
   } catch (error) {
     console.error('Error handling webhook:', error);
     res.status(500).json({ error: 'Internal Server Error' });
