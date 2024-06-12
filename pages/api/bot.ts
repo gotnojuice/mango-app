@@ -36,8 +36,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return;
     }
 
-    console.log('sellerUsername', data.cast.author.username)
-    console.log('sellerUsername', data.cast.author.text)
+    console.log('sellerUsername', data.author.username)
+    console.log('sellerUsername', data.text)
 
     const { text, author } = cast;
 
