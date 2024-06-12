@@ -25,7 +25,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   try {
-    console.log('Webhook payload:', req.body);
+    console.log('Webhook payload:', JSON.stringify(req.body, null, 2));
 
     const cast = req.body?.data?.object;
     if (!cast) {
@@ -38,25 +38,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const author = cast.author;
     const mentionedProfiles = cast.mentioned_profiles;
 
-    console.log('Cast:', cast);
+    console.log('Cast:', JSON.stringify(cast, null, 2));
     console.log('Text:', text);
-    console.log('Author:', author);
-    console.log('Mentioned Profiles:', mentionedProfiles);
-
-    if (!author?.username || !mentionedProfiles?.[0]?.username) {
-      res.status(400).json({ error: 'Invalid payload structure' });
-      return;
-    }
+    console.log('Author:', JSON.stringify(author, null, 2));
+    console.log('Mentioned Profiles:', JSON.stringify(mentionedProfiles, null, 2));
 
     const senderUsername = author.username;
-    const receiverUsername = mentionedProfiles[0].username;
-
     const match = text?.match(/^@mangobot pay @(\w+) (\d+) USDC - (.+)$/);
+
     if (!match) {
       res.status(400).json({ error: 'Invalid message format' });
       return;
     }
 
+    const receiverUsername = match[1];
     const amount = match[2];
     const reference = match[3];
 
