@@ -18,7 +18,7 @@ const Index: NextPage = () => {
   }, [isConnected, router]);
 
   return (
-    <div className="main-container">
+    <div className="page-container">
       <Head>
         <title>mangojuice</title>
         <meta content="social money from gotnojuice" name="description" />
@@ -55,13 +55,16 @@ const Index: NextPage = () => {
             </li>
           </ul>
           <p>
-            We've simplified payments with a user-friendly syntax to make
+            We&apos;ve simplified payments with a user-friendly syntax to make
             transactions straightforward and understandable:
           </p>
           <p className="syntax">
             @mangobot pay [@who] [howmuch] USDC - [payment reference]
           </p>
-
+          <p>
+            This syntax is either created for you in Pay or required in
+            Farcaster messages for mangobot to pick them up.
+          </p>
           <p>
             mangojuice leverages Farcaster for social proof, making payments on
             Base not only easier but also more trusted.
