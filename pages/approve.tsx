@@ -5,6 +5,7 @@ import { ethers } from "ethers";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import NavBar from "../components/NavBar";
 import { USDC_ABI, USDC_ADDRESS } from "./api/ethersUtils";
+import { searchUsernames } from "./api/neynarAPI"; // Import the search function
 
 interface Transaction {
   id: number;
@@ -18,12 +19,11 @@ interface Transaction {
 const Approve = () => {
   const { address } = useAccount();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [usernameMap, setUsernameMap] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        console.log("Logged in address:", address); // Log the address
-
         const response = await fetch(`/api/transactions?address=${address}`);
         const data = await response.json();
 
@@ -31,6 +31,8 @@ const Approve = () => {
 
         if (Array.isArray(data.transactions)) {
           setTransactions(data.transactions);
+          const usernames = await fetchUsernames(data.transactions);
+          setUsernameMap(usernames);
         } else {
           console.error("Unexpected response format:", data);
           setTransactions([]);
@@ -45,6 +47,26 @@ const Approve = () => {
       fetchTransactions();
     }
   }, [address]);
+
+  const fetchUsernames = async (transactions: Transaction[]) => {
+    const usernames: { [key: string]: string } = {};
+
+    for (const transaction of transactions) {
+      try {
+        const response = await searchUsernames(transaction.receiver_address);
+        if (response && response.length > 0) {
+          usernames[transaction.receiver_address] = response[0].username;
+        }
+      } catch (error) {
+        console.error(
+          `Error fetching username for address ${transaction.receiver_address}:`,
+          error
+        );
+      }
+    }
+
+    return usernames;
+  };
 
   const handleApprove = async (transaction: Transaction) => {
     try {
@@ -104,22 +126,45 @@ const Approve = () => {
       {transactions.length === 0 ? (
         <p>No pending transactions.</p>
       ) : (
-        <ul>
-          {transactions.map((transaction) => (
-            <li key={transaction.id}>
-              <p>
-                From: {transaction.sender_address} <br />
-                To: {transaction.receiver_address} <br />
-                Amount: {transaction.amount} USDC <br />
-                Reference: {transaction.reference}
-              </p>
-              <button onClick={() => handleApprove(transaction)}>
-                Approve
-              </button>
-              <button onClick={() => handleReject(transaction)}>Reject</button>
-            </li>
-          ))}
-        </ul>
+        <table className="transactions-table">
+          <thead>
+            <tr>
+              <th>To</th>
+              <th>Address</th>
+              <th>Amount</th>
+              <th>Currency</th>
+              <th>Reference</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {transactions.map((transaction) => (
+              <tr key={transaction.id}>
+                <td>
+                  {usernameMap[transaction.receiver_address] || "Loading..."}
+                </td>
+                <td>{transaction.receiver_address}</td>
+                <td>{transaction.amount}</td>
+                <td>USDC</td>
+                <td>{transaction.reference}</td>
+                <td>
+                  <button
+                    className="btn-approve"
+                    onClick={() => handleApprove(transaction)}
+                  >
+                    Approve
+                  </button>
+                  <button
+                    className="btn-reject"
+                    onClick={() => handleReject(transaction)}
+                  >
+                    Reject
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
     </main>
   );
