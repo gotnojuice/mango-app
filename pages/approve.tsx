@@ -22,6 +22,8 @@ const Approve = () => {
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
+        console.log("Logged in address:", address); // Log the address
+
         const response = await fetch(`/api/transactions?address=${address}`);
         const data = await response.json();
 
