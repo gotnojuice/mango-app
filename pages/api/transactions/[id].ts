@@ -7,12 +7,12 @@ const API_KEY = process.env.NEYNAR_API_KEY;
 const SIGNER_UUID = process.env.SIGNER_UUID;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { id } = req.query;
+  const { id, action } = req.query;
 
-  console.log(`Incoming request method: ${req.method}`);
+  console.log(`Incoming request method: ${req.method}, action: ${action}`);
 
-  if (Array.isArray(id) || typeof id !== 'string') {
-    res.status(400).json({ error: 'Invalid transaction ID' });
+  if (Array.isArray(id) || typeof id !== 'string' || (action !== 'approve' && action !== 'reject')) {
+    res.status(400).json({ error: 'Invalid transaction ID or action' });
     return;
   }
 
@@ -26,15 +26,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       const deletedTransaction = result.rows[0];
       if (deletedTransaction) {
-        const { hash, sender_address } = deletedTransaction;
+        const { hash } = deletedTransaction;
+        const message = action === 'approve' ? 'Transaction approved.' : 'Transaction rejected.';
 
         try {
-          // Reply to the cast to notify about the approval
+          // Reply to the cast to notify about the action
           await axios.post(
             NEYNAR_POST_CAST_URL,
             {
               signer_uuid: SIGNER_UUID,
-              text: `Transaction approved.`,
+              text: message,
               parent: hash,
             },
             {
