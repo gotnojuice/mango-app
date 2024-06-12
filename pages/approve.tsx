@@ -5,6 +5,7 @@ import { ethers } from "ethers";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import NavBar from "../components/NavBar";
 import { USDC_ABI, USDC_ADDRESS } from "./api/ethersUtils";
+import Head from "next/head";
 
 interface Transaction {
   id: number;
@@ -92,56 +93,63 @@ const Approve = () => {
   };
 
   return (
-    <main className="main-container">
-      <NavBar />
-      <div className="connect-button-container">
-        <ConnectButton />
-      </div>
+    <div className="main-container">
+      <Head>
+        <title>mangojuice</title>
+        <meta content="social money from gotnojuice" name="description" />
+        <link href="/favicon.ico" rel="icon" />
+      </Head>
+      <main className="main-container">
+        <NavBar />
+        <div className="connect-button-container">
+          <ConnectButton />
+        </div>
 
-      <h1 className="title">Pending Transactions</h1>
+        <h1 className="title">Pending Transactions</h1>
 
-      {transactions.length === 0 ? (
-        <p>No pending transactions.</p>
-      ) : (
-        <table className="transactions-table">
-          <thead>
-            <tr>
-              <th>To</th>
-              <th>Address</th>
-              <th>Amount</th>
-              <th>Currency</th>
-              <th>Reference</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {transactions.map((transaction) => (
-              <tr key={transaction.id}>
-                <td>{transaction.receiver_username}</td>
-                <td>{transaction.receiver_address}</td>
-                <td>{transaction.amount}</td>
-                <td>USDC</td>
-                <td>{transaction.reference}</td>
-                <td>
-                  <button
-                    className="btn-approve"
-                    onClick={() => handleApprove(transaction)}
-                  >
-                    Approve
-                  </button>
-                  <button
-                    className="btn-reject"
-                    onClick={() => handleReject(transaction)}
-                  >
-                    Reject
-                  </button>
-                </td>
+        {transactions.length === 0 ? (
+          <p>No pending transactions.</p>
+        ) : (
+          <table className="transactions-table">
+            <thead>
+              <tr>
+                <th>To</th>
+                <th>Address</th>
+                <th>Amount</th>
+                <th>Currency</th>
+                <th>Reference</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </main>
+            </thead>
+            <tbody>
+              {transactions.map((transaction) => (
+                <tr key={transaction.id}>
+                  <td>{transaction.receiver_username}</td>
+                  <td>{transaction.receiver_address}</td>
+                  <td>{transaction.amount}</td>
+                  <td>USDC</td>
+                  <td>{transaction.reference}</td>
+                  <td>
+                    <button
+                      className="btn-approve"
+                      onClick={() => handleApprove(transaction)}
+                    >
+                      Approve
+                    </button>
+                    <button
+                      className="btn-reject"
+                      onClick={() => handleReject(transaction)}
+                    >
+                      Reject
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </main>
+    </div>
   );
 };
 

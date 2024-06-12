@@ -171,22 +171,23 @@ a {
   color: #C70039; /* Mango red on hover */
 }
 
+.navbar-link.active {
+  color: #FF5733; /* Mango orange for active link */
+}
+
+.syntax {
+  color: #FF5733; /* Mango orange */
+  border: 1px solid #FF5733; /* Border color */
+  padding: 0.5rem; /* Padding inside the border */
+  border-radius: 5px; /* Rounded corners */
+  display: inline-block; /* To make the border wrap around the content */
+}
+
+.link {
+  color: #FF5733; /* Mango orange */
+  text-decoration: underline;
+}
+
 .content-container {
-  margin-top: 2rem;
-  padding: 1rem;
-  background-color: white;
-  border-radius: 0.25rem;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  color: #1a1a1a;
-}
-
-.content-container h1 {
-  margin-bottom: 1rem;
-  color: #FF5733; /* Mango orange accent */
-}
-
-.content-container p {
-  font-size: 1rem;
-  line-height: 1.5;
-  color: #1a1a1a;
+  border: none; /* Remove border */
 }
