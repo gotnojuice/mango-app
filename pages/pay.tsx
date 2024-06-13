@@ -68,6 +68,22 @@ const Pay: React.FC = () => {
       console.log("Transaction mined:", receipt);
 
       alert("Transaction successful!");
+
+      // Insert the transaction into the history table
+      await fetch("/api/history", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sender_address: address,
+          receiver_address: ethAddress,
+          receiver_username: user, // Add the receiver's username
+          amount: amount,
+          reference: reference,
+          tx_hash: tx.hash,
+        }),
+      });
     } catch (error) {
       console.error("Error sending transaction:", error);
       alert("Error sending transaction. Please try again.");
