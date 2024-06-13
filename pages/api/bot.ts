@@ -94,6 +94,28 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (!senderAddress || !receiverAddress) {
       res.status(400).json({ error: 'Could not retrieve sender or receiver address' });
+
+      // Reply to the cast to notify about the missing verified address
+      try {
+        await axios.post(
+          NEYNAR_POST_CAST_URL,
+          {
+            signer_uuid: SIGNER_UUID,
+            text: `Could not process transaction. The receiver @${receiverUsername} does not have a verified ETH address.`,
+            parent: hash,
+          },
+          {
+            headers: {
+              accept: 'application/json',
+              api_key: API_KEY,
+              'content-type': 'application/json',
+            },
+          }
+        );
+      } catch (replyError) {
+        console.error('Error replying to the cast about missing address:', replyError);
+      }
+
       return;
     }
 
