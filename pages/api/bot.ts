@@ -50,7 +50,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const senderUsername = author.username;
-    const match = text.match(/^@mangobot pay @(\w+) (\d+(\.\d+)?) (\w+) - (.+)$/);
+    const match = text.match(/^@mangobot pay @([a-zA-Z0-9._]+) (\d+(\.\d+)?) (\w+) - (.+)$/);
 
     if (!match) {
       res.status(400).json({ error: 'Invalid message format' });
