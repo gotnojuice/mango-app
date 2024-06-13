@@ -5,16 +5,15 @@ import { ethers } from "ethers";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import NavBar from "../components/NavBar";
 import { USDC_ABI, USDC_ADDRESS } from "./api/ethersUtils";
-import Head from "next/head";
 
 interface Transaction {
   id: number;
   sender_address: string;
   receiver_address: string;
-  receiver_username: string;
   amount: string;
   created_at: string;
   reference: string;
+  receiver_username: string;
 }
 
 const Approve = () => {
@@ -26,8 +25,6 @@ const Approve = () => {
       try {
         const response = await fetch(`/api/transactions?address=${address}`);
         const data = await response.json();
-
-        console.log("Fetched transactions:", data);
 
         if (Array.isArray(data.transactions)) {
           setTransactions(data.transactions);
@@ -65,11 +62,13 @@ const Approve = () => {
       const receipt = await tx.wait();
       console.log("Transaction mined:", receipt);
 
-      alert("Transaction successful!");
-
-      await fetch(`/api/transactions/${transaction.id}?action=approve`, {
+      // Save the transaction hash to the database
+      await fetch(`/api/transactions/${transaction.id}`, {
         method: "DELETE",
+        body: JSON.stringify({ tx_hash: tx.hash }),
       });
+
+      alert("Transaction successful!");
 
       setTransactions(transactions.filter((t) => t.id !== transaction.id));
     } catch (error) {
@@ -80,7 +79,7 @@ const Approve = () => {
 
   const handleReject = async (transaction: Transaction) => {
     try {
-      await fetch(`/api/transactions/${transaction.id}?action=reject`, {
+      await fetch(`/api/transactions/${transaction.id}`, {
         method: "DELETE",
       });
 
@@ -104,7 +103,7 @@ const Approve = () => {
       {transactions.length === 0 ? (
         <p>No pending transactions.</p>
       ) : (
-        <table className="transactions-table">
+        <table className="table">
           <thead>
             <tr>
               <th>To</th>
@@ -125,13 +124,13 @@ const Approve = () => {
                 <td>{transaction.reference}</td>
                 <td>
                   <button
-                    className="btn-approve"
+                    className="btn approve-btn"
                     onClick={() => handleApprove(transaction)}
                   >
                     Approve
                   </button>
                   <button
-                    className="btn-reject"
+                    className="btn reject-btn"
                     onClick={() => handleReject(transaction)}
                   >
                     Reject
