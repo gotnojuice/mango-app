@@ -1,4 +1,3 @@
-// pages/api/history.ts
 import { NextApiRequest, NextApiResponse } from 'next';
 import { sql } from '@vercel/postgres';
 
@@ -10,10 +9,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return;
   }
 
+  console.log('Queried address:', address);
+
   try {
+    // Log the addresses in the database to check for discrepancies
+    const addressesResult = await sql`SELECT DISTINCT sender_address FROM history`;
+    console.log('Addresses in the database:', addressesResult.rows);
+
     const result = await sql`
-      SELECT * FROM history WHERE sender_address = ${address}
+      SELECT * FROM history WHERE LOWER(sender_address) = LOWER(${address})
     `;
+
+    console.log('Fetched history:', result.rows);
     res.status(200).json({ transactions: result.rows });
   } catch (error) {
     console.error('Error fetching transaction history:', error);
