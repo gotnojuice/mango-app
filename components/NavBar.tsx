@@ -19,6 +19,11 @@ const NavBar = () => {
             Approve
           </Link>
         </li>
+        <li className="navbar-item">
+          <Link href="/history" className="navbar-link">
+            History
+          </Link>
+        </li>
       </ul>
     </nav>
   );
