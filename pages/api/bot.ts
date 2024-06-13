@@ -79,7 +79,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         });
         const users: User[] = response.data.result.users;
         const user = users.find(u => u.username === username);
-        return user?.verified_addresses?.eth_addresses[0] || null;
+        return user?.verified_addresses?.eth_addresses?.[0] || null;
       } catch (error) {
         console.error('Error fetching user address:', error);
         return null;
