@@ -1,4 +1,4 @@
-/* Existing CSS */
+
 
 html,
 body {
@@ -194,7 +194,6 @@ a {
   border: none; /* Remove border */
 }
 
-/* New CSS for table */
 .table-container {
   width: 100%;
   overflow-x: auto;
@@ -242,4 +241,13 @@ td {
 
 .btn-reject:hover {
   background-color: #c82333; /* Darker red on hover */
+}
+
+.basescan-link {
+  color: #FF5733; /* Mango orange accent */
+  text-decoration: underline;
+}
+
+.basescan-link:hover {
+  color: #C70039; /* Darker mango red accent */
 }
