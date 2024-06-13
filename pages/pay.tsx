@@ -69,7 +69,7 @@ const Pay: React.FC = () => {
 
       alert("Transaction successful!");
 
-      // Insert the transaction into the history table
+      // Add transaction to history
       await fetch("/api/history", {
         method: "POST",
         headers: {
@@ -78,9 +78,9 @@ const Pay: React.FC = () => {
         body: JSON.stringify({
           sender_address: address,
           receiver_address: ethAddress,
-          receiver_username: user, // Add the receiver's username
-          amount: amount,
-          reference: reference,
+          amount,
+          reference,
+          receiver_username: user,
           tx_hash: tx.hash,
         }),
       });
