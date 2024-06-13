@@ -13,7 +13,7 @@ interface Transaction {
   created_at: string;
   reference: string;
   receiver_username: string;
-  tx_hash: string; // Add transaction hash field
+  tx_hash: string;
 }
 
 const History = () => {
@@ -45,6 +45,9 @@ const History = () => {
 
   return (
     <main className="main-container">
+      <Head>
+        <title>Transaction History</title>
+      </Head>
       <NavBar />
       <div className="connect-button-container">
         <ConnectButton />

@@ -124,13 +124,13 @@ const Approve = () => {
                 <td>{transaction.reference}</td>
                 <td>
                   <button
-                    className="btn approve-btn"
+                    className="btn btn-approve"
                     onClick={() => handleApprove(transaction)}
                   >
                     Approve
                   </button>
                   <button
-                    className="btn reject-btn"
+                    className="btn btn-reject"
                     onClick={() => handleReject(transaction)}
                   >
                     Reject
