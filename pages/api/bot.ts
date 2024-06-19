@@ -50,7 +50,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const senderUsername = author.username;
-    const match = text.match(/^@mangobot pay @([a-zA-Z0-9._]+) (\d+(\.\d+)?) (\w+) - (.+)$/);
+    const match = text.match(/^@mangobot pay @([a-zA-Z0-9._]+) (\d+(\.\d+)?) (\w+)( - (.+))?$/);
 
     if (!match) {
       res.status(400).json({ error: 'Invalid message format' });
@@ -60,7 +60,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const receiverUsername = match[1];
     const amount = match[2];
     const currency = match[4];
-    const reference = match[5];
+    const reference = match[6] || ''; // Default to an empty string if reference is not provided
 
     console.log('Sender Username:', senderUsername);
     console.log('Receiver Username:', receiverUsername);
